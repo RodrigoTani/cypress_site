@@ -1,0 +1,11 @@
+npm init -y
+npm install --save-dev cypress-file-upload
+
+npx cypress open // Abre a ide
+
+
+rm -rf cypress/reports/*.json
+
+//-------------------------- mochawesome
+npm install --save-dev mochawesome mochawesome-merge mochawesome-report-generator
+npm install --save-dev cypress-mochawesome-reporter
