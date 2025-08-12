@@ -76,3 +76,9 @@
             return messages;
         });
     });
+
+    Cypress.Commands.add('checkSuccessMessage', (message) => {
+        cy.get('.alert.alert-success')
+          .should('be.visible')
+          .and('contain', message);
+      });

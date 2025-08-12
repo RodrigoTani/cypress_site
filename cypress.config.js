@@ -13,6 +13,8 @@ module.exports = defineConfig({
     html: false,
     json: true
   },
+  experimentalMemoryManagement: true,
+  numTestsKeptInMemory: 1,
   e2e: {
     setupNodeEvents(on, config) {
       require('cypress-mochawesome-reporter/plugin')(on);
