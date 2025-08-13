@@ -11,14 +11,20 @@ beforeEach(() => {
   })
 })
 
-afterEach(() => {
+afterEach(function () {
   // salva o localStorage após cada teste
   Object.keys(localStorage).forEach(key => {
     LOCAL_STORAGE_MEMORY[key] = localStorage.getItem(key)
   })
+
+  // Se o teste falhou, captura print
+  if (this.currentTest.state === 'failed') {
+    const testName = this.currentTest.title.replace(/[:\/]/g, ''); // remove caracteres inválidos
+    cy.screenshot(`erro-${testName}`, { capture: 'runner' });
+  }
 })
 
+// Ignora erros uncaught da aplicação
 Cypress.on('uncaught:exception', (err, runnable) => {
-  // Ignora todos os erros uncaught da aplicação
   return false
 })

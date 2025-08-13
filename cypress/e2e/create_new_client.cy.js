@@ -11,7 +11,7 @@ describe('Create new Client', () => {
   const user = {
     name: 'Automation Test', 
     email: 'rodrigotanni@hotmail.com',
-    cellphone: '11999999999',
+    cellphone: '11963925158',
     birthDate: '2000-01-01',
     password: '123@Senha'
   };
@@ -104,6 +104,8 @@ describe('Create new Client', () => {
 
   it('exist cellphone', () => {
     fillForm();
+    cy.get('#Email').clear().type('rodrigotanni@gmail.com');
+    
     cy.contains('button', 'Salvar').click();
     cy.verifyErrorMessage('Já existe um cliente com esse celular.');
     
