@@ -65,7 +65,7 @@
 
 // Validations
     Cypress.Commands.add('verifyErrorMessage', (expectedMessage) => {
-        return cy.get("span.form-text.text-danger.field-validation-error")
+        return cy.get('span.text-danger.field-validation-error, span.form-text.text-danger.field-validation-error')
         .then($elements => {
             const messages = Array.from($elements).map(el => el.textContent.trim());
     
@@ -77,8 +77,32 @@
         });
     });
 
-    Cypress.Commands.add('checkSuccessMessage', (message) => {
-        cy.get('.alert.alert-success')
-          .should('be.visible')
-          .and('contain', message);
+    Cypress.Commands.add('checkMessage', (expectedSuccessMessage) => {
+        return cy.get('body').then($body => {
+          if ($body.find('.alert.alert-success').length) {
+            // Mensagem de sucesso
+                return cy.get('.alert.alert-success')
+                .should('be.visible')
+                .and('contain', expectedSuccessMessage)
+                .invoke('text')
+                .then(text => {
+                    const match = text.match(/(\d+)\s*-\s*/);
+                    const pedidoId = match ? match[1] : null;
+                    cy.log(`Pedido ID capturado: ${pedidoId}`);
+                    return cy.wrap(pedidoId);
+                });
+          } else if ($body.find('.alert.alert-danger').length) {
+            // Mensagem de erro
+                return cy.get('.alert.alert-danger')
+                .should('be.visible')
+                .and('contain', expectedSuccessMessage)
+                .invoke('text')
+                .then(text => {
+                    cy.log(`Erro encontrado: ${text}`);
+                    return cy.wrap(null);
+                });
+          } else {
+            throw new Error('Nenhuma mensagem de alerta encontrada na tela.');
+          }
+        });
       });
